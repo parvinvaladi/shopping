@@ -1,5 +1,6 @@
 package com.shopping.shop.product;
 
+import com.shopping.shop.category.Category;
 import com.shopping.shop.common.BaseEntity;
 import lombok.Data;
 
@@ -18,4 +19,8 @@ public class Product extends BaseEntity{
 
     @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id",nullable = false)
+    private Category category;
 }

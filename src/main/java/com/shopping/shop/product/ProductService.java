@@ -2,9 +2,13 @@ package com.shopping.shop.product;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -15,8 +19,8 @@ public class ProductService implements IProductService{
     private final ProductRepository repository;
 
     @Override
-    public Product save(Product product) {
-        return repository.save(product);
+    public void save(Product product) {
+         repository.save(product);
     }
 
     @Override
@@ -46,4 +50,18 @@ public class ProductService implements IProductService{
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public List<Product> findByName(Optional<String> name, int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Product> productPage;
+        if(name.isEmpty()){
+            productPage = repository.findAll(pageable);
+        }else {
+            productPage = repository.findByName(name.get(),pageable);
+        }
+        List<Product> productList = productPage.getContent();
+        return productList;
+    }
+
 }

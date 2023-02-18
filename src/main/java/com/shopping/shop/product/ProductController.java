@@ -49,4 +49,13 @@ public class ProductController {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getproduct")
+    public ResponseEntity<List<Product>> findByName(
+            @RequestParam(required = false)String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size ){
+        List<Product> products = service.findByName(Optional.ofNullable(name),page,size);
+        return ResponseEntity.ok(products);
+    }
 }
