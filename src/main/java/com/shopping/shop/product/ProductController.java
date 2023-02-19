@@ -22,7 +22,6 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<Void> save(@RequestBody Product product){
         service.save(product);
-        log.info(String.valueOf(product.getDescription()));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

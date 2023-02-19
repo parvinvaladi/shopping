@@ -1,5 +1,7 @@
 package com.shopping.shop.product;
 
+import com.shopping.shop.category.Category;
+import com.shopping.shop.category.ICategoryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,9 +19,14 @@ import java.util.Optional;
 public class ProductService implements IProductService{
 
     private final ProductRepository repository;
+    private final ICategoryService categoryService;
 
     @Override
     public void save(Product product) {
+        Long categoryId = product.getCategory().getId();
+        Category category = categoryService.getById(categoryId);
+        product.setCategory(category);
+        log.info(String.valueOf(product.getCategory()));
          repository.save(product);
     }
 
