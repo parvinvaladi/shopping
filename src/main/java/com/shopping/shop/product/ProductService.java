@@ -26,7 +26,6 @@ public class ProductService implements IProductService{
         Long categoryId = product.getCategory().getId();
         Category category = categoryService.getById(categoryId);
         product.setCategory(category);
-        log.info(String.valueOf(product.getCategory()));
          repository.save(product);
     }
 
