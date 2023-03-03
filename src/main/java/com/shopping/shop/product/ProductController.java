@@ -19,8 +19,11 @@ public class ProductController {
 
     private final IProductService service;
 
+    private ProductMapper mapper;
+
     @PostMapping("/")
-    public ResponseEntity<Void> save(@RequestBody Product product){
+    public ResponseEntity<Void> save(@RequestBody ProductDTO productDTO){
+        Product product = mapper.toProduct(productDTO);
         service.save(product);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -38,9 +41,11 @@ public class ProductController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product){
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO productDTO){
+        Product product = mapper.toProduct(productDTO);
         Product product1 = service.update(id,product);
-        return ResponseEntity.ok(product1);
+        ProductDTO productDTO1 = mapper.toProductDto(product1);
+        return ResponseEntity.ok(productDTO1);
     }
 
     @DeleteMapping("/delete")
@@ -50,11 +55,12 @@ public class ProductController {
     }
 
     @GetMapping(value = "/getproduct")
-    public ResponseEntity<List<Product>> findByName(
+    public ResponseEntity<List<ProductDTO>> findByName(
             @RequestParam(required = false)String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size ){
         List<Product> products = service.findByName(Optional.ofNullable(name),page,size);
-        return ResponseEntity.ok(products);
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return ResponseEntity.ok(productDTOS);
     }
 }

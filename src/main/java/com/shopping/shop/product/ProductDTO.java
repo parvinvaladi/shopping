@@ -2,6 +2,7 @@ package com.shopping.shop.product;
 
 import com.shopping.shop.category.Category;
 import com.shopping.shop.category.CategoryDTO;
+import com.shopping.shop.common.BaseDTO;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Data
-public class ProductDTO {
+public class ProductDTO extends BaseDTO {
 
     private String name;
 
