@@ -3,6 +3,7 @@ package com.shopping.shop.category;
 import com.shopping.shop.common.BaseEntity;
 import com.shopping.shop.product.Product;
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,9 +11,14 @@ import java.util.List;
 @Entity
 @Table(name = "tbl_category")
 @Data
-public class Category extends BaseEntity {
+@Audited
+public class Category {
 
-    @Column(name = "name")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+//    @Column(name = "name")
     private String categoryName;
 
 
