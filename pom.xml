@@ -86,8 +86,8 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
-			<version>6.2.0.CR3</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

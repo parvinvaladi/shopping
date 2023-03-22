@@ -6,9 +6,8 @@ import lombok.Data;
 
 
 @Data
-public class CategoryDTO {
+public class CategoryDTO extends BaseDTO{
 
-    private Long id;
 
     @ApiModelProperty(required = true)
     private String categoryName;

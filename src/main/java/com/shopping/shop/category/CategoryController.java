@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,4 +70,40 @@ public class CategoryController {
         return ResponseEntity.ok(categoryDTOS);
     }
 
+    @GetMapping("/getAllCategoriesJpql")
+    public ResponseEntity<List<CategoryDTO>> getAllCategoriesJpql(){
+        List<Category> categories = (List<Category>) service.getAllCategoriesJPQL();
+        List<CategoryDTO> categoryDTOS = mapper.toCategoryDtos(categories);
+        return ResponseEntity.ok(categoryDTOS);
+    }
+
+    @GetMapping("/getallsort")
+    public ResponseEntity<List<CategoryDTO>> getAllCategoriesSort(){
+        List<Category> categories = service.getAllCategoriesSort();
+        return ResponseEntity.ok(mapper.toCategoryDtos(categories));
+    }
+
+    @GetMapping("/getAllCategoriesNative")
+    public ResponseEntity<List<CategoryDTO>> getAllCategoriesNative(){
+        List<Category> categories = service.getAllCategoriesNative();
+        List<CategoryDTO> categoryDTOS = mapper.toCategoryDtos(categories);
+        return ResponseEntity.ok(categoryDTOS);
+    }
+
+    @GetMapping("/getcount")
+    public ResponseEntity<Integer> getCountOfCategory(){
+        return ResponseEntity.ok(service.getCountOfCategory());
+    }
+
+    @GetMapping("/getcategorybyname")
+    public ResponseEntity<List<CategoryDTO>> getCategoryByName(@PathParam("name") String name){
+        List<Category> categories = service.getCategoryByName(name);
+        return ResponseEntity.ok(mapper.toCategoryDtos(categories));
+    }
+
+    @GetMapping("/getallusingjoin")
+    public ResponseEntity<List<CategoryDTO>> getAllUsingJoin(){
+        List<Category> categories = service.getAllUsingJoin();
+        return ResponseEntity.ok(mapper.toCategoryDtos(categories));
+    }
 }

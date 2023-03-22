@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +53,38 @@ public class CategoryService implements ICategoryService{
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Category> categories = repository.findAll(pageRequest);
         return categories.getContent();
+    }
+
+    @Override
+    public Collection<Category> getAllCategoriesJPQL() {
+        Collection<Category> categories = repository.getAllCategoriesJPQL();
+        return categories;
+    }
+
+    @Override
+    public List<Category> getAllCategoriesSort() {
+        List<Category> categories = repository.getAllCategoriesSort(Sort.by("categoryName"));
+        return categories;
+    }
+
+    @Override
+    public List<Category> getAllCategoriesNative() {
+        List<Category> categories = repository.getAllCategoriesNative();
+        return categories;
+    }
+
+    @Override
+    public Integer getCountOfCategory() {
+        return repository.getCountOfCategory();
+    }
+
+    @Override
+    public List<Category> getCategoryByName(String name) {
+        return repository.getCategoryByName(name);
+    }
+
+    @Override
+    public List<Category> getAllUsingJoin() {
+        return repository.getAllUsingJoin();
     }
 }

@@ -12,13 +12,9 @@ import java.util.List;
 @Table(name = "tbl_category")
 @Data
 @Audited
-public class Category {
+public class Category extends BaseEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-//    @Column(name = "name")
+    @Column(name = "name")
     private String categoryName;
 
 

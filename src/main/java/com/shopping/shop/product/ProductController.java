@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/v1/product")
@@ -28,16 +30,18 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/")
-    public ResponseEntity<List<Product>> getAll(){
+    @GetMapping("/")
+    public ResponseEntity<List<ProductDTO>> getAll(){
         List<Product> products = service.getAll();
-        return ResponseEntity.ok(products);
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return ResponseEntity.ok(productDTOS);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id){
+    public ResponseEntity<ProductDTO> getById(@PathVariable Long id){
         Product optionalProduct = service.getById(id);
-        return ResponseEntity.ok(optionalProduct);
+        ProductDTO productDTO = mapper.toProductDto(optionalProduct);
+        return ResponseEntity.ok(productDTO);
     }
 
     @PutMapping(value = "/update/{id}")
@@ -62,5 +66,38 @@ public class ProductController {
         List<Product> products = service.findByName(Optional.ofNullable(name),page,size);
         List<ProductDTO> productDTOS = mapper.toProductDtos(products);
         return ResponseEntity.ok(productDTOS);
+    }
+
+    @GetMapping("/getallproductordered")
+    public ResponseEntity<List<ProductDTO>> getSomeProduct(){
+        List<Product> products = service.geAllProductOrdered();
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return ResponseEntity.ok(productDTOS);
+    }
+
+    @GetMapping("/getproduct1")
+    public ResponseEntity<List<ProductDTO>> getProduct1(){
+        List<Product> products = service.getProduct1();
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return ResponseEntity.ok(productDTOS);
+    }
+
+    @GetMapping("/getproductbyname")
+    public ResponseEntity<List<ProductDTO>> getProductByName(@PathParam("name") String name){
+        List<Product> products = service.getProductByName(name);
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return new ResponseEntity<>(productDTOS,HttpStatus.OK);
+    }
+
+    @GetMapping("/getallusingjoin")
+    public ResponseEntity<List<ProductDTO>> getAllUsingJoin(){
+        List<Product> products = service.getAllUsingJoin();
+        return ResponseEntity.ok(mapper.toProductDtos(products));
+    }
+
+    @GetMapping("/productofacategory")
+    public ResponseEntity<List<ProductDTO>> getProductOfACategory(@PathParam("name") String name){
+        List<Product> products = service.getProductOfACategory(name);
+        return ResponseEntity.ok(mapper.toProductDtos(products));
     }
 }

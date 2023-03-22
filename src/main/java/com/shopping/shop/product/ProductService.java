@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -70,4 +71,29 @@ public class ProductService implements IProductService{
         return productList;
     }
 
+    @Override
+    public List<Product> geAllProductOrdered() {
+        return repository.geAllProductOrdered();
+    }
+
+    @Override
+    public List<Product> getProduct1() {
+        List<Product> products = repository.getProduct1();
+        return products;
+    }
+
+    @Override
+    public List<Product> getProductByName(String name) {
+        return repository.getProductByName(name);
+    }
+
+    @Override
+    public List<Product> getAllUsingJoin() {
+        return repository.getAllUsingJoin();
+    }
+
+    @Override
+    public List<Product> getProductOfACategory(String name) {
+        return repository.getProductOfACategory(name);
+    }
 }

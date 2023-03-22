@@ -1,9 +1,6 @@
 package com.shopping.shop.product;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public interface IProductService {
 
@@ -14,4 +11,13 @@ public interface IProductService {
     void delete(Long id);
 
     List<Product> findByName(Optional<String> name,int page,int size);
+
+    List<Product> geAllProductOrdered();
+
+    List<Product> getProduct1();
+    List<Product> getProductByName(String name);
+
+    List<Product> getAllUsingJoin();
+
+    List<Product> getProductOfACategory(String name);
 }
