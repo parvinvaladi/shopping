@@ -1,5 +1,8 @@
 package com.shopping.shop.product;
 
+import com.shopping.shop.common.SearchCriteria;
+import org.springframework.data.domain.Page;
+
 import java.util.*;
 
 public interface IProductService {
@@ -10,7 +13,8 @@ public interface IProductService {
     Product update(Long id ,Product product);
     void delete(Long id);
 
-    List<Product> findByName(Optional<String> name,int page,int size);
+    Page<Product> findByCategoryId(Long id,int page,int size);
+    Page<Product> findByName(Optional<String> name, int page, int size);
 
     List<Product> geAllProductOrdered();
 
@@ -20,4 +24,6 @@ public interface IProductService {
     List<Product> getAllUsingJoin();
 
     List<Product> getProductOfACategory(String name);
+
+    List<Product> search(List<SearchCriteria> criteriaList);
 }

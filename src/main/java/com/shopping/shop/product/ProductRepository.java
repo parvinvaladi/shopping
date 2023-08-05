@@ -3,8 +3,10 @@ package com.shopping.shop.product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -14,10 +16,11 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpecificationExecutor<Product> {
 
     @EntityGraph(attributePaths = {"category"})
     Page<Product> findAll(Pageable pageable);
+    Page<Product> findAllByCategory_Id(Long id,Pageable pageable);
     Page<Product> findByName(String name, Pageable pageable);
 //    Page<Product> findAllByPriceBetween(String price1 , String price2);
 
@@ -37,4 +40,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     @Query("SELECT p FROM Product p JOIN p.category c WHERE c.categoryName = :name")
     List<Product> getProductOfACategory(@Param("name") String name);
+
+    Page<Product> findAll(Specification<Product> specification,Pageable pageable);
 }

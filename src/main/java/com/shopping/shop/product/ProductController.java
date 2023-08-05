@@ -1,8 +1,11 @@
 package com.shopping.shop.product;
 
+import com.shopping.shop.common.PagingData;
+import com.shopping.shop.common.SearchCriteria;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,14 +61,30 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getproduct")
-    public ResponseEntity<List<ProductDTO>> findByName(
+    @GetMapping("/findbycategoryid")
+    public ResponseEntity<PagingData<ProductDTO>> findAllByCategoryId(
+            @RequestParam Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size){
+        Page<Product> products = service.findByCategoryId(id,page,size);
+        Integer totalPage = products.getTotalPages();
+        List<Product> productList = products.getContent();
+        List<ProductDTO> productDTOS = mapper.toProductDtos(productList);
+        PagingData<ProductDTO> pagingData = new PagingData<>(totalPage,page,productDTOS);
+        return ResponseEntity.ok(pagingData);
+    }
+
+    @GetMapping(value = "/findproductbyname")
+    public ResponseEntity<PagingData<ProductDTO>> findByName(
             @RequestParam(required = false)String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size ){
-        List<Product> products = service.findByName(Optional.ofNullable(name),page,size);
-        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
-        return ResponseEntity.ok(productDTOS);
+        Page<Product> productPage = service.findByName(Optional.ofNullable(name),page,size);
+        Integer totalPage = productPage.getTotalPages();
+        List<Product> productList = productPage.getContent();
+        List<ProductDTO> productDTOS = mapper.toProductDtos(productList);
+        PagingData<ProductDTO> pagingData = new PagingData<>(totalPage,page,productDTOS);
+        return ResponseEntity.ok(pagingData);
     }
 
     @GetMapping("/getallproductordered")
@@ -99,5 +118,12 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductOfACategory(@PathParam("name") String name){
         List<Product> products = service.getProductOfACategory(name);
         return ResponseEntity.ok(mapper.toProductDtos(products));
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<ProductDTO>> search(@RequestBody List<SearchCriteria> searchCriterias){
+        List<Product> products = service.search(searchCriterias);
+        List<ProductDTO> productDTOS = mapper.toProductDtos(products);
+        return ResponseEntity.ok(productDTOS);
     }
 }
