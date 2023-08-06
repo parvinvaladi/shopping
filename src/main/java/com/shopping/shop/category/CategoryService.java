@@ -3,6 +3,9 @@ package com.shopping.shop.category;
 import com.shopping.shop.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,23 +21,33 @@ import java.util.Optional;
 public class CategoryService implements ICategoryService{
 
     private final CategoryRepository repository;
+
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "one",allEntries = true),
+            @CacheEvict(value = "two",allEntries = true)
+    })
     public void save(Category category) {
         repository.save(category);
     }
 
     @Override
+    @Cacheable(value = "two",key = "#id")
     public Category getById(Long id) {
         Optional<Category> category = repository.findById(id);
         return category.get();
     }
 
     @Override
+    @Cacheable(value = "one")
     public List<Category> getAll() {
         return (List<Category>) repository.findAll();
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "two",key = "#id")
+    })
     public Category update(Long id, Category category) {
         Category category1;
         category1 = getById(id);
@@ -44,11 +57,16 @@ public class CategoryService implements ICategoryService{
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "one",allEntries = true),
+            @CacheEvict(value = "two",allEntries = true)
+    })
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
     @Override
+    @Cacheable(value = "one")
     public List<Category> findAll(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Category> categories = repository.findAll(pageRequest);
@@ -56,6 +74,7 @@ public class CategoryService implements ICategoryService{
     }
 
     @Override
+    @Cacheable(value = "one")
     public Collection<Category> getAllCategoriesJPQL() {
         Collection<Category> categories = repository.getAllCategoriesJPQL();
         return categories;

@@ -41,6 +41,9 @@ public class UserService implements IUserService {
         lastSavedUser.setUsername(user.getUsername());
         lastSavedUser.setPassword(user.getPassword());
         lastSavedUser.setBirthDay(user.getBirthDay());
+        if(user.getNationalCode() != lastSavedUser.getNationalCode()){
+            lastSavedUser.setNationalCode(user.getNationalCode());
+        }
         save(lastSavedUser);
         return lastSavedUser;
     }
